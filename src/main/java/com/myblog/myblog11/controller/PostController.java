@@ -1,16 +1,15 @@
 package com.myblog.myblog11.controller;
 
 
+import com.myblog.myblog11.entity.Post;
 import com.myblog.myblog11.payload.PostDto;
 import com.myblog.myblog11.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -22,10 +21,30 @@ public class PostController {
         this.postService = postService;
     }
 
-
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
         PostDto dto = postService.createPost(postDto);
         return new  ResponseEntity<>(dto, HttpStatus.CREATED);
     }
+
+    //getting the post based on id
+    //http://localhost:8080/api/posts/particular?id=1
+    @GetMapping("/particular")
+    public ResponseEntity<PostDto> getPostById(@RequestParam long id){
+        PostDto dto = postService.getPostById(id);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    //http://localhost:8080/api/posts?pageNo=0&pageSize=3
+    @GetMapping
+    public List<PostDto> getAllposts(
+            @RequestParam(name="pageNo", required = false, defaultValue = "0")int pageNo,
+            @RequestParam(name="pageSize", required = false, defaultValue = "3")int pageSize
+    ){
+
+        List<PostDto> postDtos = postService.getAllposts(pageNo, pageSize);
+        return postDtos;
+    }
+
+
 }
