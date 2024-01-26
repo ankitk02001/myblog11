@@ -11,5 +11,7 @@ public interface PostService {
     PostDto getPostById(long id);
 
 
-    List<PostDto> getAllposts(int pageNo, int pageSize);
+    List<PostDto> getAllposts(int pageNo, int pageSize, String sortBy, String sortDir);
+
+
 }

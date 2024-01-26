@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+import java.util.List;
 
 @Entity
 @Table(name="posts")
@@ -20,6 +20,7 @@ public class Post {
     private String title;
     private String description;
     private String content;
-
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL) // Establishes the one-to-many relationship with comments
+    private List<Comment> comments; // Represents the list of comments associated with the post
 
 }

@@ -35,15 +35,17 @@ public class PostController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    //http://localhost:8080/api/posts?pageNo=0&pageSize=3
+    //http://localhost:8080/api/posts?pageNo=0&pageSize=3&sortBy=title&sortDir=asce
     @GetMapping
     public List<PostDto> getAllposts(
             @RequestParam(name="pageNo", required = false, defaultValue = "0")int pageNo,
-            @RequestParam(name="pageSize", required = false, defaultValue = "3")int pageSize
+            @RequestParam(name="pageSize", required = false, defaultValue = "3")int pageSize,
+            @RequestParam(name="sortBy", required = false, defaultValue = "id")String sortBy,
+            @RequestParam(name="sortDir", required = false, defaultValue = "id")String sortDir
     ){
-
-        List<PostDto> postDtos = postService.getAllposts(pageNo, pageSize);
+        List<PostDto> postDtos = postService.getAllposts(pageNo, pageSize,sortBy,sortDir);
         return postDtos;
+
     }
 
 
