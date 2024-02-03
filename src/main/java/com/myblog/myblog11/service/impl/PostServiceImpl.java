@@ -5,6 +5,7 @@ import com.myblog.myblog11.exception.ResourceNotFoundException;
 import com.myblog.myblog11.payload.PostDto;
 import com.myblog.myblog11.repository.PostRepository;
 import com.myblog.myblog11.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
+    private ModelMapper modelMapper;
     private PostRepository postRepository;
 //for constructor injection no needto use @AutoWired annotation
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(ModelMapper modelMapper, PostRepository postRepository) {
+        this.modelMapper = modelMapper;
         this.postRepository = postRepository;
     }
 
@@ -68,20 +71,23 @@ public class PostServiceImpl implements PostService {
 
     //for converting Entity to Dto
     PostDto mapToDto(Post post){
-        PostDto dto=new PostDto();
-        dto.setId(post.getId());
-        dto.setTitle(post.getTitle());
-        dto.setDescription(post.getDescription());
-        dto.setContent(post.getContent());
+        //by using model mapper in one line map to entity class
+        PostDto dto = modelMapper.map(post, PostDto.class);
+//        PostDto dto=new PostDto();
+//        dto.setId(post.getId());
+//        dto.setTitle(post.getTitle());
+//        dto.setDescription(post.getDescription());
+//        dto.setContent(post.getContent());
         return dto;
     }
 
     //for converting Dto to Entity
     Post mapToEntity(PostDto postDto){
-        Post post=new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
+        Post post = modelMapper.map(postDto, Post.class);
+//        Post post=new Post();
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
         return post;
     }
 }

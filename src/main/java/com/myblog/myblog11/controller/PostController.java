@@ -1,14 +1,13 @@
 package com.myblog.myblog11.controller;
 
 
-import com.myblog.myblog11.entity.Post;
 import com.myblog.myblog11.payload.PostDto;
 import com.myblog.myblog11.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
@@ -21,6 +20,7 @@ public class PostController {
         this.postService = postService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")//by using this only admin can access this but not USER
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
         PostDto dto = postService.createPost(postDto);
