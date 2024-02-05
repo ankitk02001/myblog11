@@ -25,7 +25,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto singupDto){
 
         if(userRepository.existsByUsername(singupDto.getUsername())){
-            return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         if(userRepository.existsByEmail(singupDto.getEmail())){
