@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Data // Lombok annotation to generate getters, setters, toString, equals, and hashCode methods
 public class Comment {
     @Id // Specifies the primary key of the entity
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Specifies the generation strategy for the primary key
+@GeneratedValue(strategy = GenerationType.IDENTITY) // Specifies the generation strategy for the primary key
     private long id;
     private String text;
     private String email;

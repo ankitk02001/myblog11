@@ -20,7 +20,7 @@ public class PostServiceImpl implements PostService {
 
     private ModelMapper modelMapper;
     private PostRepository postRepository;
-//for constructor injection no needto use @AutoWired annotation
+//for constructor injection no need to use @AutoWired annotation
     public PostServiceImpl(ModelMapper modelMapper, PostRepository postRepository) {
         this.modelMapper = modelMapper;
         this.postRepository = postRepository;
@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService {
 
     //for converting Entity to Dto
     PostDto mapToDto(Post post){
-        //by using model mapper in one line map to entity class
+        //by using model mapper in one line from  map to entity class
         PostDto dto = modelMapper.map(post, PostDto.class);
 //        PostDto dto=new PostDto();
 //        dto.setId(post.getId());
