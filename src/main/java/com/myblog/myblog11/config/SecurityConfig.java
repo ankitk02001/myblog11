@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/auth/signup").permitAll()
                 //.antMatchers(HttpMethod.POST,"/api/posts").hasRole("ADMIN")//by this only admin can access this url
                 .anyRequest()
                 .authenticated()
