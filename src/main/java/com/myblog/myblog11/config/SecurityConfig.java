@@ -7,12 +7,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/api/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/auth/signup").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/auth/**").permitAll()
                 //.antMatchers(HttpMethod.POST,"/api/posts").hasRole("ADMIN")//by this only admin can access this url
                 .anyRequest()
                 .authenticated()
@@ -39,13 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
    }
 
-   @Bean
-  @Override
-   protected UserDetailsService userDetailsService(){
-       UserDetails user1 = User.builder().username("user").password(passwordEncoder().encode("user")).roles("USER").build();
-       UserDetails user2 = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
-          return new InMemoryUserDetailsManager(user1,user2);
-    }
 
 
 
@@ -55,6 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+   //not required bcz we are using database authentication
+//   @Bean
+//  @Override
+//   protected UserDetailsService userDetailsService(){
+//       UserDetails user1 = User.builder().username("user").password(passwordEncoder().encode("user")).roles("USER").build();
+//       UserDetails user2 = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
+//          return new InMemoryUserDetailsManager(user1,user2);
+//    }
+              //OR
    //By ashok Sir for in memory authentication for two users
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
