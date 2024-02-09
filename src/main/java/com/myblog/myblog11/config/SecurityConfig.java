@@ -1,8 +1,11 @@
 package com.myblog.myblog11.config;
 
+import com.myblog.myblog11.security.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//role base authority by using another annotation @PreAuthorize on controller method allow for that only
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;//// This bean is responsible for loading user-specific data from the database during authentication
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,10 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-   PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-   }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws
+            Exception {
+        // Configure AuthenticationManagerBuilder to use userDetailsService to retrieve user details from the database
+        // and passwordEncoder to encode passwords.
+        // userDetailsService: Service responsible for loading user-specific data (username, password, authorities/roles) from the database.
+        // passwordEncoder: Encoder used to encode passwords stored in the database.
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
 
 
 
